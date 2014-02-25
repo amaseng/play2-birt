@@ -11,7 +11,15 @@ libraryDependencies ++= Seq(
   "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
 )
 
+publishTo <<= version { v: String =>
+       val nexus = "https://oss.sonatype.org/"
+       if (v.trim.endsWith("SNAPSHOT")) Some("publish-snapshots" at nexus + "content/repositories/snapshots")
+       else                             Some("publish-releases" at nexus + "service/local/staging/deploy/maven2")
+     }
+
 publishMavenStyle := true
+
+publishArtifact in Test := false
 
 pomIncludeRepository := { _ => false }
 
