@@ -20,12 +20,21 @@ import org.eclipse.birt.core.framework.Platform
 import java.util.logging.Level
 import java.io.{File, InputStream, ByteArrayOutputStream, ByteArrayInputStream}
 import org.eclipse.core.internal.registry.RegistryProviderFactory
-import play.api.Logger
+import play.api.{Play, Logger}
 
 class BIRT {
 
   lazy val engine: IReportEngine = {
+    val logDir = Play.current.configuration.getString("birt.log.dir")
     val config = new EngineConfig
+    logDir match {
+      case Some(logDir) =>
+        val logDirFile = new File(logDir)
+        if (!logDirFile.exists)
+          logDirFile.mkdirs()
+        config.setLogConfig(logDir, Level.WARNING)
+      case None =>
+    }
     config.setEngineHome(".")
     Platform.startup(config)
     val factory = Platform.createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY).asInstanceOf[IReportEngineFactory]
