@@ -26,3 +26,12 @@ object PdfReportFormat extends ReportFormat {
 object XlsReportFormat extends ReportFormat {
   val formatString: String = "xls"
 }
+
+object ReportFormat {
+  def apply(formatString: String): ReportFormat =
+    formatString.toLowerCase match {
+      case "pdf" => PdfReportFormat
+      case "xls" => XlsReportFormat
+      case _ => throw new IllegalArgumentException("Format '" + formatString + "' not supported.")
+    }
+}
