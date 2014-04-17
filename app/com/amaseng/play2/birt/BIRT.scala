@@ -24,8 +24,16 @@ import play.api.{Play, Logger}
 
 class BIRT {
 
+  private def getLogDir: Option[String] =
+    try {
+      Play.current.configuration.getString("birt.log.dir")
+    }
+    catch {
+      case e: Throwable => None
+    }
+
   lazy val engine: IReportEngine = {
-    val logDir = Play.current.configuration.getString("birt.log.dir")
+    val logDir = getLogDir
     val config = new EngineConfig
     logDir match {
       case Some(logDir) =>
@@ -62,7 +70,7 @@ class BIRT {
     }
   }
 
-  def generateReport(templateFile: File, parametersMap: Map[String, AnyRef], dataMap: Map[String, AnyRef]): InputStream = {
+  def generateReport(templateFile: File, format: ReportFormat, parametersMap: Map[String, AnyRef], dataMap: Map[String, AnyRef]): InputStream = {
 
     import collection.JavaConverters._
 
@@ -70,7 +78,7 @@ class BIRT {
     val options = new HTMLRenderOption()
     val outStream = new ByteArrayOutputStream()
     options.setOutputStream(outStream)
-    options.setOutputFormat("pdf")
+    options.setOutputFormat(format.formatString)
     val task = engine.createRunAndRenderTask(template)
     task.setAppContext(dataMap.asJava)
     task.setRenderOption(options)

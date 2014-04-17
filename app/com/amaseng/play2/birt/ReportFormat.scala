@@ -15,26 +15,14 @@
  */
 package com.amaseng.play2.birt
 
-import org.scalatest._
-import java.io.File
+sealed trait ReportFormat {
+  val formatString: String
+}
 
-class BIRTSpec extends Spec {
+object PdfReportFormat extends ReportFormat {
+  val formatString: String = "pdf"
+}
 
-  object `BIRT ` {
-
-    def `should start, generate pdf report and stop correctly` {
-      val birt = new BIRT
-      birt.start()
-      birt.generateReport(new File("hello_world.rptdesign"), PdfReportFormat, Map.empty, Map.empty)
-      birt.stop()
-    }
-
-    def `should start, generate xls report and stop correctly` {
-      val birt = new BIRT
-      birt.start()
-      birt.generateReport(new File("hello_world.rptdesign"), XlsReportFormat, Map.empty, Map.empty)
-      birt.stop()
-    }
-  }
-
+object XlsReportFormat extends ReportFormat {
+  val formatString: String = "xls"
 }
