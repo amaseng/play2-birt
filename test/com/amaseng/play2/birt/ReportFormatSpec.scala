@@ -52,12 +52,20 @@ class ReportFormatSpec extends FunSpec with Matchers {
       PdfReportFormat.formatString shouldBe "pdf"
     }
 
+    it("should have MIME type = application/pdf") {
+      PdfReportFormat.mimeType shouldBe "application/pdf"
+    }
+
   }
 
   describe("XlsReportFormat") {
 
     it("should have format string = xls") {
       XlsReportFormat.formatString shouldBe "xls"
+    }
+
+    it("should have MIME type = application/vnd.ms-excel") {
+      XlsReportFormat.mimeType shouldBe "application/vnd.ms-excel"
     }
 
   }

@@ -17,14 +17,17 @@ package com.amaseng.play2.birt
 
 sealed trait ReportFormat {
   val formatString: String
+  val mimeType: String
 }
 
 object PdfReportFormat extends ReportFormat {
   val formatString: String = "pdf"
+  val mimeType: String = "application/pdf"
 }
 
 object XlsReportFormat extends ReportFormat {
   val formatString: String = "xls"
+  val mimeType: String = "application/vnd.ms-excel"
 }
 
 object ReportFormat {
