@@ -7,8 +7,8 @@ version := "1.0-SNAPSHOT"
 playScalaSettings
 
 libraryDependencies ++= Seq(
-  "org.eclipse.birt.runtime" % "org.eclipse.birt.runtime" % "4.2.0" exclude("org.milyn", "flute"),
-  "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
+  "org.eclipse.birt.runtime" % "org.eclipse.birt.runtime" % "4.2.2" exclude("org.milyn", "flute"),
+  "org.scalatest" % "scalatest_2.10" % "2.2.2" % "test"
 )
 
 publishTo <<= version { v: String =>
@@ -24,7 +24,7 @@ publishArtifact in Test := false
 pomIncludeRepository := { _ => false }
 
 pomExtra := (
-       <url>http://www.scalatest.org</url>
+       <url>https://github.com/amaseng/play2-birt</url>
          <licenses>
            <license>
              <name>the Apache License, ASL Version 2.0</name>

@@ -15,7 +15,7 @@
  */
 package com.amaseng.play2.birt
 
-import org.eclipse.birt.report.engine.api.{HTMLRenderOption, IReportEngineFactory, IReportEngine, EngineConfig}
+import org.eclipse.birt.report.engine.api._
 import org.eclipse.birt.core.framework.Platform
 import java.util.logging.Level
 import java.io.{File, InputStream, ByteArrayOutputStream, ByteArrayInputStream}
@@ -70,27 +70,33 @@ class BIRT {
     }
   }
 
-  def generateReport(templateFile: File, format: ReportFormat, parametersMap: Map[String, AnyRef], dataMap: Map[String, AnyRef]): InputStream = {
+  private def runReport(runnable: IReportRunnable, format: ReportFormat, parametersMap: Map[String, AnyRef], dataMap: Map[String, AnyRef]): InputStream = {
 
     import collection.JavaConverters._
 
-    val template = engine.openReportDesign(templateFile.getAbsolutePath)
     val options = new HTMLRenderOption()
     val outStream = new ByteArrayOutputStream()
     options.setOutputStream(outStream)
     options.setOutputFormat(format.formatString)
-    val task = engine.createRunAndRenderTask(template)
+    val task = engine.createRunAndRenderTask(runnable)
     task.setAppContext(dataMap.asJava)
     task.setRenderOption(options)
     task.setParameterValues(parametersMap.asJava)
     // Deprecated, added to appContext directly
     //for((key, value) <- dataMap)
-      //task.addScriptableJavaObject(key, value)
+    //task.addScriptableJavaObject(key, value)
     task.run()
     task.close()
     new ByteArrayInputStream(outStream.toByteArray)
   }
 
+  /*def generateReport(templateFile: File, format: ReportFormat, parametersMap: Map[String, AnyRef], dataMap: Map[String, AnyRef]): InputStream = {
+    runReport(engine.openReportDesign(templateFile.getAbsolutePath), format, parametersMap, dataMap)
+  }*/
+
+  def generateReport(templateInputStream: InputStream, format: ReportFormat, parametersMap: Map[String, AnyRef], dataMap: Map[String, AnyRef]): InputStream = {
+    runReport(engine.openReportDesign(templateInputStream), format, parametersMap, dataMap)
+  }
 }
 
 object BIRT extends BIRT
