@@ -110,7 +110,7 @@ class BIRT {
     //Create task to run the report - use the task to execute and run the report,
     val task = engine.createRunTask(runnable)
     task.setParameterValues(parametersMap.asJava)
-    task.setAppContext(dataMap.asJava)
+    task.setAppContext((parametersMap ++ dataMap).asJava)
 
     val temp = File.createTempFile("amaseng", ".rptdocument")
 
@@ -122,7 +122,7 @@ class BIRT {
 
     val rtask = engine.createRenderTask(rptdoc)
 
-    rtask.setAppContext(dataMap.asJava)
+    rtask.setAppContext((parametersMap ++ dataMap).asJava)
     rtask.setRenderOption(options)
     rtask.setParameterValues(parametersMap.asJava)
 
