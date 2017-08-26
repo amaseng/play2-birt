@@ -7,7 +7,7 @@ version := "1.0-SNAPSHOT"
 playScalaSettings
 
 libraryDependencies ++= Seq(
-  "org.eclipse.birt.runtime" % "org.eclipse.birt.runtime" % "4.2.2" exclude("org.milyn", "flute"),
+  "org.eclipse.birt.runtime" % "org.eclipse.birt.runtime" % "4.2.2" exclude("milyn", "flute"),
   "org.scalatest" % "scalatest_2.10" % "2.2.2" % "test"
 )
 
